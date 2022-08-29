@@ -1,69 +1,124 @@
-// X Create an array for rock paper scissors 
-// X Create a function for the computer to make a choice 
-// X Create a function for the player to make a choice 
-// X Write a function that compares choices 
-// X Return a string to prompt win or loss 
-// X Make selection prompt case insensitive 
-// X Write a function that allows for 5 round game 
+// X Make buttons for player to click
+// X on click, the buttons call playRound
+// X make the buttons tied to a choice
+// X display what player chooses
+// X display what computer chooses
+// X declare win or loss
+// X display score
+// X declare overall win or loss
 
-let i = 1
-const choice = ['rock', 'paper', 'scissors'];
 
-while (i < 5) {
-    console.log(`Round ${i}`)
-    i++;
-    game();
-function game(){ 
-let playerGuess = prompt("Rock, Paper, or Scissors?");
-let playerSelection = playerGuess.toLowerCase();
 
-    function answerCheck(){
-        if(choice.includes(playerSelection)) {
-            console.log(`You chose ${playerSelection}`)
-        } 
-           else{ 
-            return console.log("Answer invalid, try again.");
+const getPScore = document.getElementById('p-score');
+const getCScore = document.getElementById('c-score');
+const finalOutcome = document.getElementById('final');
+
+const btn = document.querySelectorAll('button')
+
+btn.forEach(btn => btn.addEventListener('click', e => {
+
+    function game() {
+        if(getPScore.textContent === '5') {
+            finalOutcome.textContent = 'YOU WIN!';
+            btn.removeEventListener('click', e);
+            return;
+        }
+        else if(getCScore.textContent === '5') {
+            finalOutcome.textContent = 'YOU LOSE!';
+            btn.removeEventListener('click', e);
+            return;
+        }
+        else {
+            playRound();
+        }
+
+function playRound(playerSelection, computerSelection) {
+    let pScore = parseInt(getPScore.textContent, 10);
+    let cScore = parseInt(getCScore.textContent, 10);
+    let player = document.getElementById('player');
+    let computer = document.getElementById('computer');
+    let outcome = document.getElementById('outcome');
+
+
+    function getOutcome(playerSelection, computerSelection) {
+
+        function getPlayerChoice() {
+            const rock = document.getElementById('rock');
+            const paper = document.getElementById('paper');
+            const scissors = document.getElementById('scissors');
+            if(btn == rock) {
+                playerSelection = 'rock';
+                return player.textContent = 'You Chose Rock.';
+            }
+            else if(btn == paper) {
+                playerSelection = 'paper';
+                return player.textContent = 'You Chose Paper.';
+            }
+            else if (btn == scissors) {
+                playerSelection = 'scissors';
+                return player.textContent = 'You Chose Scissors.';
+            }     
+        }
+        getPlayerChoice(playerSelection);
+
+        function getComputerChoice() {
+            const randNum = Math.floor(Math.random() * 3) + 1;
+                    
+            switch(randNum) {
+                case 1:
+                    computerSelection = "rock";
+                    computer.textContent = 'Computer Chose Rock.';
+                    break;
+                case 2:
+                    computerSelection = "paper";
+                    computer.textContent = 'Computer Chose Paper.';                    
+                    break;    
+                case 3:
+                    computerSelection = "scissors";
+                    computer.textContent = 'Computer Chose Scissors.';
+                    break;     
             }
         }
-    answerCheck();
+        getComputerChoice();
 
-    getComputerChoice();
-    function getComputerChoice() {
-        const randNum = Math.floor(Math.random() * 3) + 1;
+            if(playerSelection === computerSelection){
+                return outcome.textContent = "Draw!";
+            }
+            else if(computerSelection == "rock"){
+                return outcome.textContent = (playerSelection == "paper") ? "You Win!" : "You Lose!"
+            }
+            else if(computerSelection == "paper"){
+                return outcome.textContent = (playerSelection == "scissors") ? "You Win!" : "You Lose!"
+            }
+            else if(computerSelection == "scissors"){
+                return outcome.textContent = (playerSelection == "rock") ? "You Win!" : "You Lose!"
+            }
+
+
+        } 
+        function score() {
+            if(outcome.textContent == 'Draw!') {
+                return;
+            }
             
-        switch(randNum) {
-            case 1:
-                computerSelection = "rock";
-                break;
-            case 2:
-                computerSelection = "paper";
-                break;    
-            case 3:
-                computerSelection = "scissors";
-                break;     
+            else if(outcome.textContent == 'You Win!') {
+                let newPScore = +pScore + 1;
+                return getPScore.textContent = newPScore;
+            }
+            else {
+                let newCScore = +cScore + 1;
+                return getCScore.textContent = newCScore;
+            }
         }
-    }
-
-    playRound(playerSelection, computerSelection); 
-    function playRound(playerSelection, computerSelection) {
-        if(playerSelection == computerSelection){
-            return console.log("Draw!");
-        }
-        else if(computerSelection == "rock"){
-            return console.log((playerSelection == "paper") ? "You Win!" : "You Lose!")
-        }
-        else if(computerSelection == "paper"){
-            return console.log((playerSelection == "scissors") ? "You Win!" : "You Lose!")
-        }
-        else if(computerSelection == "scissors"){
-            return console.log((playerSelection == "rock") ? "You Win!" : "You Lose!")
-        }
-    } 
-    }
-    if(i === 5) break;
+    getOutcome();
+    score();
 }
+}
+game();
+}));
 
-    game();
+
+
 
 
 
